@@ -26,9 +26,8 @@ public class AddAppointmentCommandParser implements Parser<AddAppointmentCommand
      */
     public AddAppointmentCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_APPOINTMENT_STARTTIME,
-                        PREFIX_APPOINTMENT_DURATION, PREFIX_APPOINTMENT_NOTE);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_APPOINTMENT_STARTTIME,
+                PREFIX_APPOINTMENT_DURATION, PREFIX_APPOINTMENT_NOTE);
 
         Index index;
 
@@ -55,7 +54,16 @@ public class AddAppointmentCommandParser implements Parser<AddAppointmentCommand
         int duration = ParserUtil.parsePositiveInteger(argMultimap.getValue(PREFIX_APPOINTMENT_DURATION).get());
         String note = argMultimap.getValue(PREFIX_APPOINTMENT_NOTE).orElse("");
 
-        Appointment appointment = new Appointment(startTimeStr, duration, note);
+        Appointment appointment;
+
+        // is this a good way to check for parse exceptions?
+        try {
+            appointment = new Appointment(startTimeStr, duration, note);
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    AddAppointmentCommand.MESSAGE_USAGE),
+                    e);
+        }
 
         return new AddAppointmentCommand(index, appointment);
     }

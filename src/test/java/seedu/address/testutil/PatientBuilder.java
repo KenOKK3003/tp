@@ -105,7 +105,7 @@ public class PatientBuilder {
     }
 
     public Patient build() {
-        return new Patient(name, phone, email, address, tags);
+        return new Patient(name, phone, email, address, tags, appointment);
     }
 
 }
