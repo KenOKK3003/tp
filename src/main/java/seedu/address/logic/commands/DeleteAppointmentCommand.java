@@ -12,11 +12,11 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
 /**
- * Deletes the appointment of the person identified by the displayed index from the address book.
+ * Deletes the appointment of the patient identified by the displayed index from the address book.
  */
 public class DeleteAppointmentCommand extends Command {
 
-    public static final String COMMAND_WORD = "deleteappt";
+    public static final String COMMAND_WORD = "dapt";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the appointment of the person identified "
@@ -25,10 +25,10 @@ public class DeleteAppointmentCommand extends Command {
             + "Example: " + COMMAND_WORD + " 1";
 
     public static final String MESSAGE_DELETE_APPOINTMENT_SUCCESS =
-            "Deleted appointment for Person: %1$s";
+            "Deleted appointment for Patient: %1$s";
 
     public static final String MESSAGE_NO_APPOINTMENT =
-            "This person does not have an appointment to delete.";
+            "This patient does not have an appointment to delete.";
 
     private final Index targetIndex;
 
@@ -41,43 +41,32 @@ public class DeleteAppointmentCommand extends Command {
     }
 
     /**
-     * Executes the delete appointment command by removing the appointment of the person
+     * Executes the delete appointment command by removing the appointment of the patient
      * at the specified {@code targetIndex} in the filtered person list.
      */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Patient> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Patient personToEdit = lastShownList.get(targetIndex.getZeroBased());
 
-        // TODO: Uncomment once Cavan's Appointment PR is merged (adds getAppointment() to Person)
-        // if (personToEdit.getAppointment().isEmpty()) {
-        //     throw new CommandException(MESSAGE_NO_APPOINTMENT);
-        // }
+         if (personToEdit.getAppointment().isEmpty()) {
+             throw new CommandException(MESSAGE_NO_APPOINTMENT);
+         }
 
-        // TODO: Uncomment once Cavan's Appointment PR is merged (adds 6-param Person constructor)
-        // Person updatedPerson = new Person(
-        //         personToEdit.getName(),
-        //         personToEdit.getPhone(),
-        //         personToEdit.getEmail(),
-        //         personToEdit.getAddress(),
-        //         personToEdit.getTags(),
-        //         null
-        // );
-
-        // TODO: Remove this 5-param Person constructor once Cavan's Appointment PR is merged
-        Person updatedPerson = new Person(
-                personToEdit.getName(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getTags()
-        );
+         Person updatedPerson = new Person(
+                 personToEdit.getName(),
+                 personToEdit.getPhone(),
+                 personToEdit.getEmail(),
+                 personToEdit.getAddress(),
+                 personToEdit.getTags(),
+                 null
+         );
 
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
