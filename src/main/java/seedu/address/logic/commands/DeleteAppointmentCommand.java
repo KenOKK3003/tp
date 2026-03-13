@@ -53,19 +53,18 @@ public class DeleteAppointmentCommand extends Command {
         }
 
         Patient personToEdit = lastShownList.get(targetIndex.getZeroBased());
-
-         if (personToEdit.getAppointment().isEmpty()) {
-             throw new CommandException(MESSAGE_NO_APPOINTMENT);
-         }
+        if (personToEdit.getAppointment().isEmpty()) {
+            throw new CommandException(MESSAGE_NO_APPOINTMENT);
+        }
 
         Patient updatedPerson = new Patient(
-                 personToEdit.getName(),
-                 personToEdit.getPhone(),
-                 personToEdit.getEmail(),
-                 personToEdit.getAddress(),
-                 personToEdit.getTags(),
-                 null
-         );
+            personToEdit.getName(),
+            personToEdit.getPhone(),
+            personToEdit.getEmail(),
+            personToEdit.getAddress(),
+            personToEdit.getTags(),
+            null
+        );
 
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
