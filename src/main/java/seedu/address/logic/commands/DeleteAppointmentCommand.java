@@ -47,26 +47,37 @@ public class DeleteAppointmentCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Patient> lastShownList = model.getFilteredPersonList();
+        List<Person> lastShownList = model.getFilteredPersonList();
 
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        Patient personToEdit = lastShownList.get(targetIndex.getZeroBased());
+        Person personToEdit = lastShownList.get(targetIndex.getZeroBased());
 
-         if (personToEdit.getAppointment().isEmpty()) {
-             throw new CommandException(MESSAGE_NO_APPOINTMENT);
-         }
+        // TODO: Uncomment once Cavan's Appointment PR is merged (adds getAppointment() to Person)
+        // if (personToEdit.getAppointment().isEmpty()) {
+        //     throw new CommandException(MESSAGE_NO_APPOINTMENT);
+        // }
 
-         Person updatedPerson = new Person(
-                 personToEdit.getName(),
-                 personToEdit.getPhone(),
-                 personToEdit.getEmail(),
-                 personToEdit.getAddress(),
-                 personToEdit.getTags(),
-                 null
-         );
+        // TODO: Uncomment once Cavan's Appointment PR is merged (adds 6-param Person constructor)
+        // Person updatedPerson = new Person(
+        //         personToEdit.getName(),
+        //         personToEdit.getPhone(),
+        //         personToEdit.getEmail(),
+        //         personToEdit.getAddress(),
+        //         personToEdit.getTags(),
+        //         null
+        // );
+
+        // TODO: Remove this 5-param Person constructor once Cavan's Appointment PR is merged
+        Person updatedPerson = new Person(
+                personToEdit.getName(),
+                personToEdit.getPhone(),
+                personToEdit.getEmail(),
+                personToEdit.getAddress(),
+                personToEdit.getTags()
+        );
 
         model.setPerson(personToEdit, updatedPerson);
         model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
