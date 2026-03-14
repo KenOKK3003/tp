@@ -42,8 +42,11 @@ class JsonAdaptedTag {
     }
 
     @JsonValue
-    public String getTagName() {
-        return tagName;
+    public String toJson() {
+        if ("general".equals(tagType)) {
+            return tagName;
+        }
+        return tagType + ":" + tagName;
     }
 
     /**
@@ -52,17 +55,28 @@ class JsonAdaptedTag {
      * @throws IllegalValueException if there were any data constraints violated in the adapted tag.
      */
     public Tag toModelType() throws IllegalValueException {
-        if (!Tag.isValidTagName(tagName)) {
+
+        String name = tagName;
+        String type = tagType;
+
+        // Detect stored prefix format
+        if (tagName.contains(":")) {
+            String[] parts = tagName.split(":", 2);
+            type = parts[0];
+            name = parts[1];
+        }
+
+        if (!Tag.isValidTagName(name)) {
             throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
         }
 
-        switch (tagType) {
+        switch (type) {
         case "allergy":
-            return new Allergy(tagName);
+            return new Allergy(name);
         case "condition":
-            return new MedicalCondition(tagName);
+            return new MedicalCondition(name);
         default:
-            return new GeneralTag(tagName);
+            return new GeneralTag(name);
         }
     }
 }
