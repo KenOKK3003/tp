@@ -130,7 +130,8 @@ public class EditCommand extends Command {
         updatedTags.addAll(finalAllergies);
         updatedTags.addAll(finalMedicalConditions);
 
-        return new Patient(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Patient(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
+                patientToEdit.getAppointment().orElse(null));
     }
 
     @Override
