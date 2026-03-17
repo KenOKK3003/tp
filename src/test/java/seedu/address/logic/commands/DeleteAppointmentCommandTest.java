@@ -1,9 +1,13 @@
 package seedu.address.logic.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import org.junit.jupiter.api.Test;
@@ -68,5 +72,46 @@ public class DeleteAppointmentCommandTest {
 
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertTrue(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getAppointment().isEmpty());
+    }
+
+    @Test
+    public void execute_invalidIndexFilteredList_failure() {
+        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+
+        Index outOfBoundIndex = INDEX_SECOND_PERSON;
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+
+        DeleteAppointmentCommand command = new DeleteAppointmentCommand(outOfBoundIndex);
+        assertCommandFailure(command, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void equals() {
+        DeleteAppointmentCommand deleteFirstCommand = new DeleteAppointmentCommand(INDEX_FIRST_PERSON);
+        DeleteAppointmentCommand deleteSecondCommand = new DeleteAppointmentCommand(INDEX_SECOND_PERSON);
+
+        // same object -> returns true
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommand));
+
+        // same values -> returns true
+        DeleteAppointmentCommand deleteFirstCommandCopy = new DeleteAppointmentCommand(INDEX_FIRST_PERSON);
+        assertTrue(deleteFirstCommand.equals(deleteFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(deleteFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(deleteFirstCommand.equals(null));
+
+        // different patient index -> returns false
+        assertFalse(deleteFirstCommand.equals(deleteSecondCommand));
+    }
+
+    @Test
+    public void toStringMethod() {
+        Index targetIndex = Index.fromOneBased(1);
+        DeleteAppointmentCommand command = new DeleteAppointmentCommand(targetIndex);
+        String expected = DeleteAppointmentCommand.class.getCanonicalName() + "{targetIndex=" + targetIndex + "}";
+        assertEquals(expected, command.toString());
     }
 }
