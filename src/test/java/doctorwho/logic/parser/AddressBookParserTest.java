@@ -26,7 +26,7 @@ import doctorwho.logic.parser.exceptions.ParseException;
 import doctorwho.model.patient.NameContainsKeywordsPredicate;
 import doctorwho.model.patient.Patient;
 import doctorwho.testutil.EditPersonDescriptorBuilder;
-import doctorwho.testutil.PersonBuilder;
+import doctorwho.testutil.PatientBuilder;
 import doctorwho.testutil.PersonUtil;
 
 public class AddressBookParserTest {
@@ -35,7 +35,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_add() throws Exception {
-        Patient patient = new PersonBuilder().build();
+        Patient patient = new PatientBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(patient));
         assertEquals(new AddCommand(patient), command);
     }
@@ -55,7 +55,7 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Patient patient = new PersonBuilder().build();
+        Patient patient = new PatientBuilder().build();
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(patient).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getEditPersonDescriptorDetails(descriptor));

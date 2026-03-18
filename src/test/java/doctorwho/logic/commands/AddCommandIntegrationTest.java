@@ -12,7 +12,7 @@ import doctorwho.model.Model;
 import doctorwho.model.ModelManager;
 import doctorwho.model.UserPrefs;
 import doctorwho.model.patient.Patient;
-import doctorwho.testutil.PersonBuilder;
+import doctorwho.testutil.PatientBuilder;
 
 /**
  * Contains integration tests (interaction with the Model) for {@code AddCommand}.
@@ -28,7 +28,7 @@ public class AddCommandIntegrationTest {
 
     @Test
     public void execute_newPerson_success() {
-        Patient validPatient = new PersonBuilder().build();
+        Patient validPatient = new PatientBuilder().build();
 
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.addPerson(validPatient);
