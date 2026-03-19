@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-public class MedicalConditionTest {
+public class ConditionTest {
 
     @Test
     public void constructor_validName_success() {
-        MedicalCondition condition = new MedicalCondition("Asthma");
+        Condition condition = new Condition("Asthma");
         assertEquals("[Asthma]", condition.toString());
     }
 }

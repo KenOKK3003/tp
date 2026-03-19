@@ -11,7 +11,7 @@ import seedu.address.model.patient.Name;
 import seedu.address.model.patient.Patient;
 import seedu.address.model.patient.Phone;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -111,14 +111,14 @@ public class PatientBuilder {
     }
 
     /**
-     * Parses the {@code conditions} into a {@code Set<MedicalCondition>}
+     * Parses the {@code conditions} into a {@code Set<Condition>}
      */
-    public PatientBuilder withMedicalConditions(String... conditions) {
-        this.tags.removeIf(t -> t instanceof MedicalCondition);
-        Set<Tag> conditionSet = Arrays.stream(conditions)
-                .map(seedu.address.model.tag.MedicalCondition::new)
+    public PatientBuilder withconditions(String... conditions) {
+        this.tags.removeIf(t -> t instanceof Condition);
+        Set<Tag> conditionset = Arrays.stream(conditions)
+                .map(seedu.address.model.tag.Condition::new)
                 .collect(java.util.stream.Collectors.toSet());
-        this.tags.addAll(conditionSet);
+        this.tags.addAll(conditionset);
         return this;
     }
 

@@ -3,8 +3,8 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
@@ -34,7 +34,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_ALLERGY, PREFIX_MEDICALCONDITION);
+                        PREFIX_ALLERGY, PREFIX_CONDITION);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)
                 || !argMultimap.getPreamble().isEmpty()) {
@@ -52,8 +52,8 @@ public class AddCommandParser implements Parser<AddCommand> {
             tags.add(ParserUtil.parseAllergy(allergy));
         }
 
-        for (String condition : argMultimap.getAllValues(PREFIX_MEDICALCONDITION)) {
-            tags.add(ParserUtil.parseMedicalCondition(condition));
+        for (String condition : argMultimap.getAllValues(PREFIX_CONDITION)) {
+            tags.add(ParserUtil.parseCondition(condition));
         }
 
         Patient patient = new Patient(name, phone, email, address, tags);

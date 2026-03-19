@@ -11,7 +11,7 @@ import seedu.address.model.patient.Name;
 import seedu.address.model.patient.Patient;
 import seedu.address.model.patient.Phone;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -43,12 +43,12 @@ public class EditPersonDescriptorBuilder {
         Set<Tag> allergies = existingTags.stream()
                 .filter(t -> t instanceof Allergy)
                 .collect(Collectors.toSet());
-        Set<Tag> medicalConditions = existingTags.stream()
-                .filter(t -> t instanceof MedicalCondition)
+        Set<Tag> conditions = existingTags.stream()
+                .filter(t -> t instanceof Condition)
                 .collect(Collectors.toSet());
 
         descriptor.setAllergies(allergies);
-        descriptor.setMedicalConditions(medicalConditions);
+        descriptor.setconditions(conditions);
     }
 
     /**
@@ -94,12 +94,12 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Parses the {@code conditions} into a {@code Set<MedicalCondition>} and sets it to the
+     * Parses the {@code conditions} into a {@code Set<Condition>} and sets it to the
      * {@code EditPersonDescriptor} that we are building.
      */
-    public EditPersonDescriptorBuilder withMedicalConditions(String... conditions) {
-        Set<Tag> conditionSet = Stream.of(conditions).map(MedicalCondition::new).collect(Collectors.toSet());
-        descriptor.setMedicalConditions(conditionSet);
+    public EditPersonDescriptorBuilder withconditions(String... conditions) {
+        Set<Tag> conditionset = Stream.of(conditions).map(Condition::new).collect(Collectors.toSet());
+        descriptor.setconditions(conditionset);
         return this;
     }
 

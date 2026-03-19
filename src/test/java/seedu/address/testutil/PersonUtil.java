@@ -2,8 +2,8 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
@@ -13,7 +13,7 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.model.patient.Patient;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -40,8 +40,8 @@ public class PersonUtil {
         patient.getTags().forEach(tag -> {
             if (tag instanceof Allergy) {
                 sb.append(PREFIX_ALLERGY).append(tag.tagName).append(" ");
-            } else if (tag instanceof MedicalCondition) {
-                sb.append(PREFIX_MEDICALCONDITION).append(tag.tagName).append(" ");
+            } else if (tag instanceof Condition) {
+                sb.append(PREFIX_CONDITION).append(tag.tagName).append(" ");
             }
         });
         return sb.toString();
@@ -64,12 +64,12 @@ public class PersonUtil {
                 allergies.forEach(s -> sb.append(PREFIX_ALLERGY).append(s.tagName).append(" "));
             }
         }
-        if (descriptor.getMedicalConditions().isPresent()) {
-            Set<Tag> conditions = descriptor.getMedicalConditions().get();
+        if (descriptor.getconditions().isPresent()) {
+            Set<Tag> conditions = descriptor.getconditions().get();
             if (conditions.isEmpty()) {
-                sb.append(PREFIX_MEDICALCONDITION);
+                sb.append(PREFIX_CONDITION);
             } else {
-                conditions.forEach(s -> sb.append(PREFIX_MEDICALCONDITION).append(s.tagName).append(" "));
+                conditions.forEach(s -> sb.append(PREFIX_CONDITION).append(s.tagName).append(" "));
             }
         }
         return sb.toString();

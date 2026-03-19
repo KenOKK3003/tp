@@ -7,8 +7,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_APPOINTMENT_DURATION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_APPOINTMENT_NOTE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_APPOINTMENT_STARTTIME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -66,12 +66,12 @@ public class CommandTestUtil {
     public static final String ALLERGY_DESC_PENICILLIN = " " + PREFIX_ALLERGY + VALID_ALLERGY_PENICILLIN;
     public static final String ALLERGY_DESC_SULFONAMIDES = " " + PREFIX_ALLERGY + VALID_ALLERGY_SULFONAMIDES;
 
-    public static final String CONDITION_DESC_DIABETES = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_DIABETES;
-    public static final String CONDITION_DESC_HYPERTENSION = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_HYPERTENSION;
-    public static final String CONDITION_DESC_ASTHMA = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_ASTHMA;
+    public static final String CONDITION_DESC_DIABETES = " " + PREFIX_CONDITION + VALID_CONDITION_DIABETES;
+    public static final String CONDITION_DESC_HYPERTENSION = " " + PREFIX_CONDITION + VALID_CONDITION_HYPERTENSION;
+    public static final String CONDITION_DESC_ASTHMA = " " + PREFIX_CONDITION + VALID_CONDITION_ASTHMA;
 
-    public static final String INVALID_ALLERGY_DESC = " " + PREFIX_ALLERGY + "ibuprofen*"; // '*' not allowed in allergies
-    public static final String INVALID_CONDITION_DESC = " " + PREFIX_MEDICALCONDITION + "diab*";
+    public static final String INVALID_ALLERGY_DESC = " " + PREFIX_ALLERGY + "ibuprofen*";
+    public static final String INVALID_CONDITION_DESC = " " + PREFIX_CONDITION + "diab*";
 
     /* ===================== Appointment ===================== */
 

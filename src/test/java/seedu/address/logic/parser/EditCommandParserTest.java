@@ -1,11 +1,38 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.CommandTestUtil.*;
+import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.ALLERGY_DESC_ASPIRIN;
+import static seedu.address.logic.commands.CommandTestUtil.ALLERGY_DESC_IBUPROFEN;
+import static seedu.address.logic.commands.CommandTestUtil.ALLERGY_DESC_SULFONAMIDES;
+import static seedu.address.logic.commands.CommandTestUtil.CONDITION_DESC_DIABETES;
+import static seedu.address.logic.commands.CommandTestUtil.CONDITION_DESC_HYPERTENSION;
+import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_ALLERGY_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_CONDITION_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_ASPIRIN;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_IBUPROFEN;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_SULFONAMIDES;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_CONDITION_DIABETES;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_CONDITION_HYPERTENSION;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
@@ -202,12 +229,12 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_medicalConditionFieldSpecified_success() {
+    public void parse_conditionFieldSpecified_success() {
         Index targetIndex = INDEX_FIRST_PERSON;
         String userInput = targetIndex.getOneBased() + CONDITION_DESC_DIABETES;
 
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withMedicalConditions(VALID_CONDITION_DIABETES).build();
+                .withconditions(VALID_CONDITION_DIABETES).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);
@@ -231,7 +258,7 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_invalidMedicalConditionValue_failure() {
+    public void parse_invalidConditionValue_failure() {
         assertParseFailure(parser, "1" + INVALID_CONDITION_DESC, Tag.MESSAGE_CONSTRAINTS);
     }
 
@@ -247,11 +274,36 @@ public class EditCommandParserTest {
     }
 
     @Test
-    public void parse_resetMedicalConditions_success() {
+    public void parse_resetconditions_success() {
         Index targetIndex = INDEX_THIRD_PERSON;
-        String userInput = targetIndex.getOneBased() + " " + PREFIX_MEDICALCONDITION;
+        String userInput = targetIndex.getOneBased() + " " + PREFIX_CONDITION;
 
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withMedicalConditions().build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withconditions().build();
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_multipleconditionsSpecified_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + CONDITION_DESC_DIABETES + CONDITION_DESC_HYPERTENSION;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+            .withconditions(VALID_CONDITION_DIABETES, VALID_CONDITION_HYPERTENSION).build();
+        EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
+
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_allergyAndconditionspecified_success() {
+        Index targetIndex = INDEX_FIRST_PERSON;
+        String userInput = targetIndex.getOneBased() + ALLERGY_DESC_ASPIRIN + CONDITION_DESC_DIABETES;
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+            .withAllergies(VALID_ALLERGY_ASPIRIN)
+            .withconditions(VALID_CONDITION_DIABETES).build();
         EditCommand expectedCommand = new EditCommand(targetIndex, descriptor);
 
         assertParseSuccess(parser, userInput, expectedCommand);

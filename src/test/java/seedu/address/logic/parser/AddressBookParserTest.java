@@ -58,9 +58,9 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_edit() throws Exception {
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withName(VALID_NAME_AMY).build();
+            .withName(VALID_NAME_AMY).build();
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + INDEX_FIRST_PERSON.getOneBased() + " " + NAME_DESC_AMY);
+            + INDEX_FIRST_PERSON.getOneBased() + " " + NAME_DESC_AMY);
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 

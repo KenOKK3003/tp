@@ -1,30 +1,31 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_ASPIRIN;
 import static seedu.address.testutil.Assert.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 public class JsonAdaptedTagTest {
 
     @Test
     public void toModelType_validAllergyTag_returnsAllergy() throws Exception {
-        JsonAdaptedTag adaptedTag = new JsonAdaptedTag("allergy:peanut");
+        JsonAdaptedTag adaptedTag = new JsonAdaptedTag("allergy:Aspirin");
         Tag modelTag = adaptedTag.toModelType();
 
         assertEquals(Allergy.class, modelTag.getClass());
     }
 
     @Test
-    public void toModelType_validConditionTag_returnsMedicalCondition() throws Exception {
+    public void toModelType_validConditionTag_returnsCondition() throws Exception {
         JsonAdaptedTag adaptedTag = new JsonAdaptedTag("condition:asthma");
         Tag modelTag = adaptedTag.toModelType();
 
-        assertEquals(MedicalCondition.class, modelTag.getClass());
+        assertEquals(Condition.class, modelTag.getClass());
     }
 
     @Test
@@ -49,13 +50,13 @@ public class JsonAdaptedTagTest {
 
     @Test
     public void toJson_jsonCreatorConstructor_returnsTagNameOnly() throws Exception {
-        JsonAdaptedTag adaptedTag = new JsonAdaptedTag("peanut");
-        assertEquals("peanut", adaptedTag.toJson());
+        JsonAdaptedTag adaptedTag = new JsonAdaptedTag(VALID_ALLERGY_ASPIRIN);
+        assertEquals(VALID_ALLERGY_ASPIRIN, adaptedTag.toJson());
     }
 
     @Test
     public void constructor_fromModelTag_createsCorrectType() throws Exception {
-        Tag allergy = new Allergy("peanut");
+        Tag allergy = new Allergy(VALID_ALLERGY_ASPIRIN);
         JsonAdaptedTag adaptedTag = new JsonAdaptedTag(allergy);
 
         Tag result = adaptedTag.toModelType();
@@ -64,16 +65,16 @@ public class JsonAdaptedTagTest {
     }
 
     @Test
-    public void toJson_medicalConditionTag_returnsConditionPrefix() throws Exception {
-        Tag condition = new MedicalCondition("asthma");
+    public void toJson_conditionTag_returnsConditionPrefix() throws Exception {
+        Tag condition = new Condition("asthma");
         JsonAdaptedTag adaptedTag = new JsonAdaptedTag(condition);
         assertEquals("condition:asthma", adaptedTag.toJson());
     }
 
     @Test
     public void toJson_allergyTag_returnsAllergyPrefix() throws Exception {
-        Tag allergy = new Allergy("peanut");
+        Tag allergy = new Allergy(VALID_ALLERGY_ASPIRIN);
         JsonAdaptedTag adaptedTag = new JsonAdaptedTag(allergy);
-        assertEquals("allergy:peanut", adaptedTag.toJson());
+        assertEquals("allergy:Aspirin", adaptedTag.toJson());
     }
 }

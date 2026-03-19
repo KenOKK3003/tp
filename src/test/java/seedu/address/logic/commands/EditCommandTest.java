@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DESC_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_ASPIRIN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_IBUPROFEN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -149,20 +150,20 @@ public class EditCommandTest {
     @Test
     public void execute_editAllergyOnly_keepsOtherTags() {
         Patient patientToEdit = new PatientBuilder()
-                .withAllergies("friend", "dust")
-                .withMedicalConditions("diabetes")
+                .withAllergies(VALID_ALLERGY_ASPIRIN, "penicillin")
+                .withconditions("diabetes")
                 .build();
         model.addPerson(patientToEdit);
         Index lastIndex = Index.fromOneBased(model.getFilteredPersonList().size());
 
         // edit allergies only
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withAllergies("pollen").build();
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withAllergies("sulfonamide").build();
         EditCommand editCommand = new EditCommand(lastIndex, descriptor);
 
-        // only allergies change, medical conditions stay
+        // only allergies change, conditions stay
         Patient expectedPatient = new PatientBuilder()
-                .withAllergies("pollen")
-                .withMedicalConditions("diabetes")
+                .withAllergies("sulfonamide")
+                .withconditions("diabetes")
                 .build();
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(expectedPatient));
@@ -174,22 +175,75 @@ public class EditCommandTest {
     }
 
     @Test
-    public void execute_editMedicalConditionOnly_keepsOtherTags() {
-        Patient patientToEdit = new PatientBuilder().withAllergies("friend", "dust").withMedicalConditions("diabetes")
-                .build();
+    public void execute_editConditionOnly_keepsOtherTags() {
+        Patient patientToEdit = new PatientBuilder().withAllergies("ibuprofen", VALID_ALLERGY_ASPIRIN)
+            .withconditions("diabetes")
+            .build();
         model.addPerson(patientToEdit);
         Index lastIndex = Index.fromOneBased(model.getFilteredPersonList().size());
 
-        // edit allergies only
         EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
-                .withMedicalConditions("asthma").build();
+                .withconditions("asthma").build();
         EditCommand editCommand = new EditCommand(lastIndex, descriptor);
 
-        // only mc change, rest of tags stay
-        Patient expectedPatient = new PatientBuilder().withAllergies("friend", "dust").withMedicalConditions("asthma")
-                .build();
+        Patient expectedPatient = new PatientBuilder().withAllergies("ibuprofen", VALID_ALLERGY_ASPIRIN)
+            .withconditions("asthma")
+            .build();
         String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
                 Messages.format(expectedPatient));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(patientToEdit, expectedPatient);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_editMultipleconditions_success() {
+        Patient patientToEdit = new PatientBuilder()
+            .withAllergies(VALID_ALLERGY_ASPIRIN)
+            .withconditions("diabetes", "hypertension")
+            .build();
+        model.addPerson(patientToEdit);
+        Index lastIndex = Index.fromOneBased(model.getFilteredPersonList().size());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+            .withconditions("asthma", "hypertension").build();
+        EditCommand editCommand = new EditCommand(lastIndex, descriptor);
+
+        Patient expectedPatient = new PatientBuilder()
+            .withAllergies(VALID_ALLERGY_ASPIRIN)
+            .withconditions("asthma", "hypertension")
+            .build();
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+            Messages.format(expectedPatient));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(patientToEdit, expectedPatient);
+
+        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_editAllergyAndCondition_bothChange() {
+        Patient patientToEdit = new PatientBuilder()
+            .withAllergies(VALID_ALLERGY_ASPIRIN)
+            .withconditions("diabetes")
+            .build();
+        model.addPerson(patientToEdit);
+        Index lastIndex = Index.fromOneBased(model.getFilteredPersonList().size());
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder()
+            .withAllergies("penicillin")
+            .withconditions("asthma").build();
+        EditCommand editCommand = new EditCommand(lastIndex, descriptor);
+
+        Patient expectedPatient = new PatientBuilder()
+            .withAllergies("penicillin")
+            .withconditions("asthma")
+            .build();
+        String expectedMessage = String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS,
+            Messages.format(expectedPatient));
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(patientToEdit, expectedPatient);
@@ -231,5 +285,4 @@ public class EditCommandTest {
                 + editPersonDescriptor + "}";
         assertEquals(expected, editCommand.toString());
     }
-
 }

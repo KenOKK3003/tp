@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -21,19 +21,26 @@ class JsonAdaptedTag {
      */
     @JsonCreator
     public JsonAdaptedTag(String tagName) {
-        this.tagName = tagName;
-        this.tagType = "general";
+        if (tagName.contains(":")) {
+            String[] parts = tagName.split(":", 2);
+            this.tagType = parts[0];
+            this.tagName = parts[1];
+        } else {
+            this.tagName = tagName;
+            this.tagType = "general";
+        }
     }
 
     /**
      * Converts a given {@code Tag} into this class for Jackson use.
      */
+    @JsonCreator
     public JsonAdaptedTag(Tag source) {
         tagName = source.tagName;
 
         if (source instanceof Allergy) {
             tagType = "allergy";
-        } else if (source instanceof MedicalCondition) {
+        } else if (source instanceof Condition) {
             tagType = "condition";
         } else {
             tagType = "general";
@@ -58,13 +65,6 @@ class JsonAdaptedTag {
         String name = tagName;
         String type = tagType;
 
-        // Detect stored prefix format
-        if (tagName.contains(":")) {
-            String[] parts = tagName.split(":", 2);
-            type = parts[0];
-            name = parts[1];
-        }
-
         if (!Tag.isValidTagName(name)) {
             throw new IllegalValueException(Tag.MESSAGE_CONSTRAINTS);
         }
@@ -73,7 +73,7 @@ class JsonAdaptedTag {
         case "allergy":
             return new Allergy(name);
         case "condition":
-            return new MedicalCondition(name);
+            return new Condition(name);
         default:
             throw new IllegalValueException("Unknown tag type: " + type
                     + ". Tags must be prefixed with 'allergy:' or 'condition:'");

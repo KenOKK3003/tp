@@ -7,8 +7,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import seedu.address.commons.util.ToStringBuilder;
+import seedu.address.model.tag.Allergy;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -60,14 +63,21 @@ public class Patient {
         return address;
     }
 
-    /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
-     * if modification is attempted.
-     */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
     }
 
+    public Set<Tag> getAllergies() {
+        return tags.stream()
+            .filter(t -> t instanceof Allergy)
+            .collect(Collectors.toSet());
+    }
+
+    public Set<Tag> getConditions() {
+        return tags.stream()
+            .filter(t -> t instanceof Condition)
+            .collect(Collectors.toSet());
+    }
     public Optional<Appointment> getAppointment() {
         return Optional.ofNullable(appointment);
     }

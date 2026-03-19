@@ -4,8 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 
@@ -34,7 +34,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_ALLERGY, PREFIX_MEDICALCONDITION);
+                        PREFIX_ALLERGY, PREFIX_CONDITION);
 
         Index index;
 
@@ -66,8 +66,8 @@ public class EditCommandParser implements Parser<EditCommand> {
                 .ifPresent(editPersonDescriptor::setAllergies);
 
         // c/ for MC only
-        parseMedicalConditionsForEdit(argMultimap.getAllValues(PREFIX_MEDICALCONDITION))
-                .ifPresent(editPersonDescriptor::setMedicalConditions);
+        parseconditionsForEdit(argMultimap.getAllValues(PREFIX_CONDITION))
+                .ifPresent(editPersonDescriptor::setconditions);
 
         if (!editPersonDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
@@ -86,14 +86,14 @@ public class EditCommandParser implements Parser<EditCommand> {
         return Optional.of(ParserUtil.parseAllergies(tagSet));
     }
 
-    private Optional<Set<Tag>> parseMedicalConditionsForEdit(Collection<String> tags) throws ParseException {
+    private Optional<Set<Tag>> parseconditionsForEdit(Collection<String> tags) throws ParseException {
         assert tags != null;
 
         if (tags.isEmpty()) {
             return Optional.empty();
         }
         Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseMedicalConditions(tagSet));
+        return Optional.of(ParserUtil.parseconditions(tagSet));
     }
 
 }

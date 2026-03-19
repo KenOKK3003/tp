@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.patient.Patient;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -70,7 +70,7 @@ public class PersonCard extends UiPart<Region> {
 
             if (tag instanceof Allergy) {
                 tagLabel.getStyleClass().add("allergy-tag");
-            } else if (tag instanceof MedicalCondition) {
+            } else if (tag instanceof Condition) {
                 tagLabel.getStyleClass().add("condition-tag");
             } else {
                 tagLabel.getStyleClass().add("general-tag");
@@ -92,7 +92,7 @@ public class PersonCard extends UiPart<Region> {
         if (tag instanceof Allergy) {
             return 0;
         }
-        if (tag instanceof MedicalCondition) {
+        if (tag instanceof Condition) {
             return 1;
         }
         return 2;

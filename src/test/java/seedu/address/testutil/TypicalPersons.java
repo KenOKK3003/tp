@@ -2,8 +2,8 @@ package seedu.address.testutil;
 
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_IBUPROFEN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_ASPIRIN;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_IBUPROFEN;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_AMY;
@@ -26,11 +26,11 @@ public class TypicalPersons {
     public static final Patient ALICE = new PatientBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("94351253")
-            .withAllergies("Aspirin").build();
+            .withAllergies(VALID_ALLERGY_ASPIRIN).build();
     public static final Patient BENSON = new PatientBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com").withPhone("98765432")
-            .withAllergies("Ibuprofen", "Aspirin").build();
+            .withAllergies("Ibuprofen", VALID_ALLERGY_ASPIRIN).build();
     public static final Patient CARL = new PatientBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withAddress("wall street").build();
     public static final Patient DANIEL = new PatientBuilder().withName("Daniel Meier").withPhone("87652533")

@@ -14,7 +14,7 @@ import seedu.address.model.patient.Email;
 import seedu.address.model.patient.Name;
 import seedu.address.model.patient.Phone;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -129,29 +129,29 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String condition} into a {@code MedicalCondition}.
+     * Parses a {@code String condition} into a {@code Condition}.
      * @throws ParseException if the given {@code condition} is invalid.
      */
-    public static MedicalCondition parseMedicalCondition(String condition) throws ParseException {
+    public static Condition parseCondition(String condition) throws ParseException {
         requireNonNull(condition);
         String trimmedCondition = condition.trim();
         if (!Tag.isValidTagName(trimmedCondition)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
-        return new MedicalCondition(trimmedCondition);
+        return new Condition(trimmedCondition);
     }
 
     /**
-     * Parses a {@code String condition} into a {@code MedicalCondition}.
+     * Parses a {@code String condition} into a {@code Condition}.
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code condition} is invalid.
      */
-    public static Set<Tag> parseMedicalConditions(Collection<String> tags) throws ParseException {
+    public static Set<Tag> parseconditions(Collection<String> tags) throws ParseException {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
-            tagSet.add(parseMedicalCondition(tagName));
+            tagSet.add(parseCondition(tagName));
         }
         return tagSet;
     }

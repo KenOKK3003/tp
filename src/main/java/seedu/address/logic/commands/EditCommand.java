@@ -3,8 +3,8 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_CONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICALCONDITION;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
@@ -29,7 +29,7 @@ import seedu.address.model.patient.Name;
 import seedu.address.model.patient.Patient;
 import seedu.address.model.patient.Phone;
 import seedu.address.model.tag.Allergy;
-import seedu.address.model.tag.MedicalCondition;
+import seedu.address.model.tag.Condition;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -48,7 +48,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
             + "[" + PREFIX_ALLERGY + "ALLERGY]..."
-            + "[" + PREFIX_MEDICALCONDITION + "CONDITION]...\n"
+            + "[" + PREFIX_CONDITION + "CONDITION]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
             + PREFIX_EMAIL + "johndoe@example.com";
@@ -111,16 +111,16 @@ public class EditCommand extends Command {
         Set<Tag> existingAllergies = existingTags.stream()
                 .filter(t -> t instanceof Allergy)
                 .collect(Collectors.toSet());
-        Set<Tag> existingMedicalConditions = existingTags.stream()
-                .filter(t -> t instanceof MedicalCondition)
+        Set<Tag> existingconditions = existingTags.stream()
+                .filter(t -> t instanceof Condition)
                 .collect(Collectors.toSet());
 
         Set<Tag> finalAllergies = editPersonDescriptor.getAllergies().orElse(existingAllergies);
-        Set<Tag> finalMedicalConditions = editPersonDescriptor.getMedicalConditions().orElse(existingMedicalConditions);
+        Set<Tag> finalconditions = editPersonDescriptor.getconditions().orElse(existingconditions);
 
         Set<Tag> updatedTags = new HashSet<>();
         updatedTags.addAll(finalAllergies);
-        updatedTags.addAll(finalMedicalConditions);
+        updatedTags.addAll(finalconditions);
 
         return new Patient(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags,
                 patientToEdit.getAppointment().orElse(null));
@@ -160,7 +160,7 @@ public class EditCommand extends Command {
         private Email email;
         private Address address;
         private Set<Tag> allergies;
-        private Set<Tag> medicalConditions;
+        private Set<Tag> conditions;
 
         public EditPersonDescriptor() {}
 
@@ -174,14 +174,14 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setAllergies(toCopy.allergies);
-            setMedicalConditions(toCopy.medicalConditions);
+            setconditions(toCopy.conditions);
         }
 
         /**
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, allergies, medicalConditions);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, allergies, conditions);
         }
 
         public void setName(Name name) {
@@ -234,21 +234,21 @@ public class EditCommand extends Command {
         }
 
         /**
-         * Sets {@code medicalConditions} to this object's {@code medicalConditions}.
-         * A defensive copy of {@code medicalConditions} is used internally.
+         * Sets {@code conditions} to this object's {@code conditions}.
+         * A defensive copy of {@code conditions} is used internally.
          */
-        public void setMedicalConditions(Set<Tag> medicalConditions) {
-            this.medicalConditions = (medicalConditions != null) ? new HashSet<>(medicalConditions) : null;
+        public void setconditions(Set<Tag> conditions) {
+            this.conditions = (conditions != null) ? new HashSet<>(conditions) : null;
         }
 
         /**
          * Returns an unmodifiable medical condition set, which throws {@code UnsupportedOperationException}
          * if modification is attempted.
-         * Returns {@code Optional#empty()} if {@code medicalConditions} is null.
+         * Returns {@code Optional#empty()} if {@code conditions} is null.
          */
-        public Optional<Set<Tag>> getMedicalConditions() {
-            return (medicalConditions != null)
-                    ? Optional.of(Collections.unmodifiableSet(medicalConditions)) : Optional.empty();
+        public Optional<Set<Tag>> getconditions() {
+            return (conditions != null)
+                    ? Optional.of(Collections.unmodifiableSet(conditions)) : Optional.empty();
         }
 
         @Override
@@ -268,7 +268,7 @@ public class EditCommand extends Command {
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
                     && Objects.equals(allergies, otherEditPersonDescriptor.allergies)
-                    && Objects.equals(medicalConditions, otherEditPersonDescriptor.medicalConditions);
+                    && Objects.equals(conditions, otherEditPersonDescriptor.conditions);
         }
 
         @Override
@@ -279,7 +279,7 @@ public class EditCommand extends Command {
                     .add("email", email)
                     .add("address", address)
                     .add("allergies", allergies)
-                    .add("medicalConditions", medicalConditions)
+                    .add("conditions", conditions)
                     .toString();
         }
     }
