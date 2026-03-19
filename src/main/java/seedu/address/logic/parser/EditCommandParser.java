@@ -65,7 +65,7 @@ public class EditCommandParser implements Parser<EditCommand> {
         parseAllergiesForEdit(argMultimap.getAllValues(PREFIX_ALLERGY))
                 .ifPresent(editPersonDescriptor::setAllergies);
 
-        // mc/ for MC only
+        // c/ for MC only
         parseMedicalConditionsForEdit(argMultimap.getAllValues(PREFIX_MEDICALCONDITION))
                 .ifPresent(editPersonDescriptor::setMedicalConditions);
 

@@ -1,29 +1,7 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.ALLERGY_DESC_NUTS;
-import static seedu.address.logic.commands.CommandTestUtil.ALLERGY_DESC_SEAFOOD;
-import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_ALLERGY_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
-import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_NUTS;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ALLERGY_SEAFOOD;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.*;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ALLERGY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
@@ -48,41 +26,39 @@ import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PatientBuilder;
 
 public class AddCommandParserTest {
-    private static final String ALLERGY_DESC_PEANUT = " " + PREFIX_ALLERGY + "Peanut";
-    private static final String CONDITION_DESC_ASTHMA = " " + PREFIX_MEDICALCONDITION + "Asthma";
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
     public void parse_allFieldsPresent_success() {
         // whitespace only preamble
-        Patient expectedPatient = new PatientBuilder(BOB).withAllergies(VALID_ALLERGY_SEAFOOD).build();
+        Patient expectedPatient = new PatientBuilder(BOB).withAllergies(VALID_ALLERGY_IBUPROFEN).build();
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + ALLERGY_DESC_SEAFOOD, new AddCommand(expectedPatient));
+                + ADDRESS_DESC_BOB + ALLERGY_DESC_IBUPROFEN, new AddCommand(expectedPatient));
 
         // multiple tags - all accepted
         Patient expectedPatientMultipleTags = new PatientBuilder(BOB)
-                .withAllergies(VALID_ALLERGY_SEAFOOD, VALID_ALLERGY_NUTS)
+                .withAllergies(VALID_ALLERGY_ASPIRIN, VALID_ALLERGY_IBUPROFEN)
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD,
+                        + ALLERGY_DESC_ASPIRIN + ALLERGY_DESC_IBUPROFEN,
                 new AddCommand(expectedPatientMultipleTags));
 
         // allergy and medical condition
         Patient expectedPatientWithMedical = new PatientBuilder(BOB)
-                .withAllergies(VALID_ALLERGY_SEAFOOD, "Peanut")
-                .withMedicalConditions("Asthma")
+                .withAllergies(VALID_ALLERGY_IBUPROFEN, VALID_ALLERGY_PENICILLIN)
+                .withMedicalConditions(VALID_CONDITION_ASTHMA)
                 .build();
         assertParseSuccess(parser,
                 NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + ALLERGY_DESC_SEAFOOD + ALLERGY_DESC_PEANUT + CONDITION_DESC_ASTHMA,
+                        + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_PENICILLIN + CONDITION_DESC_ASTHMA,
                 new AddCommand(expectedPatientWithMedical));
     }
 
     @Test
     public void parse_repeatedNonTagValue_failure() {
         String validExpectedPersonString = NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + ALLERGY_DESC_SEAFOOD;
+                + ADDRESS_DESC_BOB + ALLERGY_DESC_ASPIRIN;
 
         // multiple names
         assertParseFailure(parser, NAME_DESC_AMY + validExpectedPersonString,
@@ -180,23 +156,23 @@ public class AddCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid name
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD, Name.MESSAGE_CONSTRAINTS);
+                + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_IBUPROFEN, Name.MESSAGE_CONSTRAINTS);
 
         // invalid phone
         assertParseFailure(parser, NAME_DESC_BOB + INVALID_PHONE_DESC + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD, Phone.MESSAGE_CONSTRAINTS);
+                + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_ASPIRIN, Phone.MESSAGE_CONSTRAINTS);
 
         // invalid email
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + INVALID_EMAIL_DESC + ADDRESS_DESC_BOB
-                + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD, Email.MESSAGE_CONSTRAINTS);
+                + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_ASPIRIN, Email.MESSAGE_CONSTRAINTS);
 
         // invalid address
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC
-                + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD, Address.MESSAGE_CONSTRAINTS);
+                + ALLERGY_DESC_IBUPROFEN+ ALLERGY_DESC_ASPIRIN, Address.MESSAGE_CONSTRAINTS);
 
         // invalid tag
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + INVALID_ALLERGY_DESC + VALID_ALLERGY_SEAFOOD, Tag.MESSAGE_CONSTRAINTS);
+                + INVALID_ALLERGY_DESC + ALLERGY_DESC_ASPIRIN, Tag.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported
         assertParseFailure(parser, INVALID_NAME_DESC + PHONE_DESC_BOB + EMAIL_DESC_BOB + INVALID_ADDRESS_DESC,
@@ -204,7 +180,7 @@ public class AddCommandParserTest {
 
         // non-empty preamble
         assertParseFailure(parser, PREAMBLE_NON_EMPTY + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
-                + ADDRESS_DESC_BOB + ALLERGY_DESC_NUTS + ALLERGY_DESC_SEAFOOD,
+                + ADDRESS_DESC_BOB + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_ASPIRIN,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
 
         // invalid allergy
@@ -213,6 +189,6 @@ public class AddCommandParserTest {
 
         // invalid medical condition
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " mc/!!!", Tag.MESSAGE_CONSTRAINTS);
+                + " c/!!!", Tag.MESSAGE_CONSTRAINTS);
     }
 }

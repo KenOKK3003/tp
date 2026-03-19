@@ -38,8 +38,8 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
-    public static final String VALID_ALLERGY_NUTS = "nuts";
-    public static final String VALID_ALLERGY_SEAFOOD = "seafood";
+    public static final String VALID_ALLERGY_IBUPROFEN = "Ibuprofen";
+    public static final String VALID_ALLERGY_ASPIRIN = "Aspirin";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -55,17 +55,23 @@ public class CommandTestUtil {
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
 
-    public static final String VALID_ALLERGY_DUST = "dust";
-    public static final String VALID_ALLERGY_POLLEN = "pollen";
-    public static final String VALID_MEDICALCONDITION_DIABETES = "diabetes";
-    public static final String ALLERGY_DESC_SEAFOOD = " " + PREFIX_ALLERGY + VALID_ALLERGY_SEAFOOD;
-    public static final String ALLERGY_DESC_NUTS = " " + PREFIX_ALLERGY + VALID_ALLERGY_NUTS;
-    public static final String ALLERGY_DESC_DUST = " " + PREFIX_ALLERGY + VALID_ALLERGY_DUST;
-    public static final String ALLERGY_DESC_POLLEN = " " + PREFIX_ALLERGY + VALID_ALLERGY_POLLEN;
-    public static final String MEDICALCONDITION_DESC_DIABETES = " " + PREFIX_MEDICALCONDITION
-            + VALID_MEDICALCONDITION_DIABETES;
-    public static final String INVALID_ALLERGY_DESC = " " + PREFIX_ALLERGY + "dust*"; // '*' not allowed in allergies
-    public static final String INVALID_MEDICALCONDITION_DESC = " " + PREFIX_MEDICALCONDITION + "diab*";
+    public static final String VALID_ALLERGY_SULFONAMIDES = "Sulfonamides";
+    public static final String VALID_ALLERGY_PENICILLIN = "Penicillin";
+    public static final String VALID_CONDITION_DIABETES = "Diabetes";
+    public static final String VALID_CONDITION_HYPERTENSION = "Hypertension";
+    public static final String VALID_CONDITION_ASTHMA = "Asthma";
+
+    public static final String ALLERGY_DESC_ASPIRIN = " " + PREFIX_ALLERGY + VALID_ALLERGY_ASPIRIN;
+    public static final String ALLERGY_DESC_IBUPROFEN = " " + PREFIX_ALLERGY + VALID_ALLERGY_IBUPROFEN;
+    public static final String ALLERGY_DESC_PENICILLIN = " " + PREFIX_ALLERGY + VALID_ALLERGY_PENICILLIN;
+    public static final String ALLERGY_DESC_SULFONAMIDES = " " + PREFIX_ALLERGY + VALID_ALLERGY_SULFONAMIDES;
+
+    public static final String CONDITION_DESC_DIABETES = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_DIABETES;
+    public static final String CONDITION_DESC_HYPERTENSION = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_HYPERTENSION;
+    public static final String CONDITION_DESC_ASTHMA = " " + PREFIX_MEDICALCONDITION + VALID_CONDITION_ASTHMA;
+
+    public static final String INVALID_ALLERGY_DESC = " " + PREFIX_ALLERGY + "ibuprofen*"; // '*' not allowed in allergies
+    public static final String INVALID_CONDITION_DESC = " " + PREFIX_MEDICALCONDITION + "diab*";
 
     /* ===================== Appointment ===================== */
 
@@ -96,10 +102,10 @@ public class CommandTestUtil {
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
                 .withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY).withAddress(VALID_ADDRESS_AMY)
-                .withAllergies(VALID_ALLERGY_SEAFOOD).build();
+                .withAllergies(VALID_ALLERGY_ASPIRIN).build();
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
-                .withAllergies(VALID_ALLERGY_NUTS, VALID_ALLERGY_SEAFOOD).build();
+                .withAllergies(VALID_ALLERGY_IBUPROFEN, VALID_ALLERGY_ASPIRIN).build();
     }
 
     /**

@@ -42,7 +42,7 @@ class JsonAdaptedTag {
 
     @JsonValue
     public String toJson() {
-        if ("general".equals(tagType)) {
+        if (tagType.equals("general")) {
             return tagName;
         }
         return tagType + ":" + tagName;
