@@ -74,9 +74,9 @@ public interface Model {
     void addPatient(Patient patient);
 
     /**
-     * Replaces the given patient {@code target} with {@code editedPerson}.
+     * Replaces the given patient {@code target} with {@code editedPatient}.
      * {@code target} must exist in the address book.
-     * The patient identity of {@code editedPerson} must not be the same as another existing patient in the address
+     * The patient identity of {@code editedPatient} must not be the same as another existing patient in the address
      * book.
      */
     void setPatient(Patient target, Patient editedPatient);
