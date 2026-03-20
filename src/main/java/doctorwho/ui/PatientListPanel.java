@@ -18,21 +18,21 @@ public class PatientListPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(PatientListPanel.class);
 
     @FXML
-    private ListView<Patient> personListView;
+    private ListView<Patient> patientListView;
 
     /**
      * Creates a {@code PatientListPanel} with the given {@code ObservableList}.
      */
     public PatientListPanel(ObservableList<Patient> patientList) {
         super(FXML);
-        personListView.setItems(patientList);
-        personListView.setCellFactory(listView -> new PersonListViewCell());
+        patientListView.setItems(patientList);
+        patientListView.setCellFactory(listView -> new PatientListViewCell());
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code Person} using a {@code PersonCard}.
+     * Custom {@code ListCell} that displays the graphics of a {@code Patient} using a {@code PatientCard}.
      */
-    class PersonListViewCell extends ListCell<Patient> {
+    class PatientListViewCell extends ListCell<Patient> {
         @Override
         protected void updateItem(Patient patient, boolean empty) {
             super.updateItem(patient, empty);
