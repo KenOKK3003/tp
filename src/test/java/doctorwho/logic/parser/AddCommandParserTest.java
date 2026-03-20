@@ -1,33 +1,7 @@
 package doctorwho.logic.parser;
 
 import static doctorwho.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static doctorwho.logic.commands.CommandTestUtil.ADDRESS_DESC_AMY;
-import static doctorwho.logic.commands.CommandTestUtil.ADDRESS_DESC_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.ALLERGY_DESC_ASPIRIN;
-import static doctorwho.logic.commands.CommandTestUtil.ALLERGY_DESC_IBUPROFEN;
-import static doctorwho.logic.commands.CommandTestUtil.ALLERGY_DESC_PENICILLIN;
-import static doctorwho.logic.commands.CommandTestUtil.CONDITION_DESC_ASTHMA;
-import static doctorwho.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
-import static doctorwho.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
-import static doctorwho.logic.commands.CommandTestUtil.INVALID_ALLERGY_DESC;
-import static doctorwho.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
-import static doctorwho.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
-import static doctorwho.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
-import static doctorwho.logic.commands.CommandTestUtil.NAME_DESC_AMY;
-import static doctorwho.logic.commands.CommandTestUtil.NAME_DESC_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.PHONE_DESC_AMY;
-import static doctorwho.logic.commands.CommandTestUtil.PHONE_DESC_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
-import static doctorwho.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_ALLERGY_ASPIRIN;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_ALLERGY_IBUPROFEN;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_ALLERGY_PENICILLIN;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_CONDITION_ASTHMA;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_NAME_BOB;
-import static doctorwho.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
+import static doctorwho.logic.commands.CommandTestUtil.*;
 import static doctorwho.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static doctorwho.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static doctorwho.logic.parser.CliSyntax.PREFIX_NAME;
@@ -54,29 +28,44 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_allFieldsPresent_success() {
-        // whitespace only preamble
-        Patient expectedPatient = new PatientBuilder(BOB).withAllergies(VALID_ALLERGY_IBUPROFEN).build();
+        // test with allergy only
+        Patient expectedPatient = new PatientBuilder(BOB).withAllergies(VALID_ALLERGY_IBUPROFEN)
+            .withConditions().build();
         assertParseSuccess(parser, PREAMBLE_WHITESPACE + NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB
                 + ADDRESS_DESC_BOB + ALLERGY_DESC_IBUPROFEN, new AddCommand(expectedPatient));
 
-        // multiple tags - all accepted
-        Patient expectedPatientMultipleTags = new PatientBuilder(BOB)
-                .withAllergies(VALID_ALLERGY_ASPIRIN, VALID_ALLERGY_IBUPROFEN)
-                .build();
+        // test with multiple allergies
+        Patient expectedPatientMultipleAllergies = new PatientBuilder(BOB)
+            .withAllergies(VALID_ALLERGY_ASPIRIN, VALID_ALLERGY_IBUPROFEN).withConditions().build();
         assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + ALLERGY_DESC_ASPIRIN + ALLERGY_DESC_IBUPROFEN,
-                new AddCommand(expectedPatientMultipleTags));
+            NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + ALLERGY_DESC_ASPIRIN
+                + ALLERGY_DESC_IBUPROFEN,
+            new AddCommand(expectedPatientMultipleAllergies));
 
-        // allergy and condition
-        Patient expectedPatientWithCondition = new PatientBuilder(BOB)
-                .withAllergies(VALID_ALLERGY_IBUPROFEN, VALID_ALLERGY_PENICILLIN)
-                .withConditions(VALID_CONDITION_ASTHMA)
+        //test with condition only
+        Patient expectedPatientConditionOnly = new PatientBuilder(BOB).withAllergies()
+            .withConditions(VALID_CONDITION_HYPERTENSION).build();
+        assertParseSuccess(parser,
+            NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + CONDITION_DESC_HYPERTENSION,
+            new AddCommand(expectedPatientConditionOnly));
+
+        // test with multiple conditions
+        Patient expectedPatientMultipleConditions = new PatientBuilder(BOB).withAllergies()
+            .withConditions(VALID_CONDITION_HYPERTENSION, VALID_CONDITION_DIABETES).build();
+        assertParseSuccess(parser,
+            NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + CONDITION_DESC_HYPERTENSION
+                + CONDITION_DESC_DIABETES,
+            new AddCommand(expectedPatientMultipleConditions));
+
+        // allergy and condition test
+        Patient expectedPatientWithBoth = new PatientBuilder(BOB)
+                .withAllergies(VALID_ALLERGY_IBUPROFEN)
+                .withConditions(VALID_CONDITION_HYPERTENSION)
                 .build();
         assertParseSuccess(parser,
-                NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                        + ALLERGY_DESC_IBUPROFEN + ALLERGY_DESC_PENICILLIN + CONDITION_DESC_ASTHMA,
-                new AddCommand(expectedPatientWithCondition));
+            NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB + ALLERGY_DESC_IBUPROFEN
+                + CONDITION_DESC_HYPERTENSION,
+            new AddCommand(expectedPatientWithBoth));
     }
 
     @Test
@@ -146,9 +135,23 @@ public class AddCommandParserTest {
     @Test
     public void parse_optionalFieldsMissing_success() {
         // zero tags
-        Patient expectedPatient = new PatientBuilder(AMY).withAllergies().build();
+        Patient expectedPatient = new PatientBuilder(AMY).withAllergies().withConditions().build();
         assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
                 new AddCommand(expectedPatient));
+
+        // only allergy
+        Patient expectedPatientAllergyOnly = new PatientBuilder(AMY).withAllergies(VALID_ALLERGY_ASPIRIN)
+            .withConditions().build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + ALLERGY_DESC_ASPIRIN,
+            new AddCommand(expectedPatientAllergyOnly));
+
+        // only condition
+        Patient expectedPatientConditionOnly = new PatientBuilder(AMY).withAllergies()
+            .withConditions(VALID_CONDITION_ASTHMA).build();
+        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + CONDITION_DESC_ASTHMA,
+            new AddCommand(expectedPatientConditionOnly));
     }
 
     @Test
