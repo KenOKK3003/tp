@@ -30,7 +30,7 @@ import static doctorwho.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static doctorwho.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import static doctorwho.testutil.TypicalIndexes.INDEX_FIRST_PATIENT;
 import static doctorwho.testutil.TypicalIndexes.INDEX_SECOND_PATIENT;
-import static doctorwho.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+import static doctorwho.testutil.TypicalIndexes.INDEX_THIRD_PATIENT;
 
 import org.junit.jupiter.api.Test;
 
@@ -91,7 +91,7 @@ public class EditCommandParserTest {
         // invalid phone followed by valid email
         assertParseFailure(parser, "1" + INVALID_PHONE_DESC + EMAIL_DESC_AMY, Phone.MESSAGE_CONSTRAINTS);
 
-        // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Person} being edited,
+        // while parsing {@code PREFIX_TAG} alone will reset the tags of the {@code Patient} being edited,
         // parsing it together with a valid tag results in error
         assertParseFailure(parser, "1" + TAG_DESC_FRIEND + TAG_DESC_HUSBAND + TAG_EMPTY, Tag.MESSAGE_CONSTRAINTS);
         assertParseFailure(parser, "1" + TAG_DESC_FRIEND + TAG_EMPTY + TAG_DESC_HUSBAND, Tag.MESSAGE_CONSTRAINTS);
@@ -131,7 +131,7 @@ public class EditCommandParserTest {
     @Test
     public void parse_oneFieldSpecified_success() {
         // name
-        Index targetIndex = INDEX_THIRD_PERSON;
+        Index targetIndex = INDEX_THIRD_PATIENT;
         String userInput = targetIndex.getOneBased() + NAME_DESC_AMY;
         EditCommand.EditPatientDescriptor descriptor = new EditPatientDescriptorBuilder()
             .withName(VALID_NAME_AMY).build();
@@ -197,7 +197,7 @@ public class EditCommandParserTest {
 
     @Test
     public void parse_resetTags_success() {
-        Index targetIndex = INDEX_THIRD_PERSON;
+        Index targetIndex = INDEX_THIRD_PATIENT;
         String userInput = targetIndex.getOneBased() + TAG_EMPTY;
 
         EditCommand.EditPatientDescriptor descriptor = new EditPatientDescriptorBuilder().withTags().build();
