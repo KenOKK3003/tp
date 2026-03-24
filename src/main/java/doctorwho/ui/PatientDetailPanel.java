@@ -80,25 +80,39 @@ public class PatientDetailPanel extends UiPart<Region> {
 
     private void populateConditionsFlowPane() {
         conditions.getChildren().clear();
-        patient.getConditions().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> {
-                    Label tagLabel = new Label(tag.tagName);
-                    tagLabel.getStyleClass().add("tag");
-                    tagLabel.getStyleClass().add("condition-tag");
-                    conditions.getChildren().add(tagLabel);
-                });
+
+        if (patient.getConditions().isEmpty()) {
+            Label naLabel = new Label("N/A");
+            naLabel.getStyleClass().add("cell_small_label");
+            conditions.getChildren().add(naLabel);
+        } else {
+            patient.getConditions().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> {
+                        Label tagLabel = new Label(tag.tagName);
+                        tagLabel.getStyleClass().add("tag");
+                        tagLabel.getStyleClass().add("condition-tag");
+                        conditions.getChildren().add(tagLabel);
+                    });
+        }
     }
 
     private void populateAllergiesFlowPane() {
         allergies.getChildren().clear();
-        patient.getAllergies().stream()
-                .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> {
-                    Label tagLabel = new Label(tag.tagName);
-                    tagLabel.getStyleClass().add("tag");
-                    tagLabel.getStyleClass().add("allergy-tag");
-                    allergies.getChildren().add(tagLabel);
-                });
+
+        if (patient.getAllergies().isEmpty()) {
+            Label naLabel = new Label("N/A");
+            naLabel.getStyleClass().add("cell_small_label");
+            allergies.getChildren().add(naLabel);
+        } else {
+            patient.getAllergies().stream()
+                    .sorted(Comparator.comparing(tag -> tag.tagName))
+                    .forEach(tag -> {
+                        Label tagLabel = new Label(tag.tagName);
+                        tagLabel.getStyleClass().add("tag");
+                        tagLabel.getStyleClass().add("allergy-tag");
+                        allergies.getChildren().add(tagLabel);
+                    });
+        }
     }
 }
