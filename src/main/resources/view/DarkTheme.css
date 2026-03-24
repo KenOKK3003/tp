@@ -412,3 +412,7 @@
     -fx-text-fill: #cccccc;
     -fx-font-size: 14px;
 }
+
+#appointment {
+    -fx-text-fill: white;
+}
