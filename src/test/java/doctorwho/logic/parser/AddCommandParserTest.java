@@ -236,17 +236,9 @@ public class AddCommandParserTest {
 
         // invalid allergy
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " al/!!!", Allergy.MESSAGE_CONSTRAINTS);
-
-        // invalid allergy using named constant
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
             + INVALID_ALLERGY_DESC, Allergy.MESSAGE_CONSTRAINTS);
 
         // invalid condition
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " c/!!!", Condition.MESSAGE_CONSTRAINTS);
-
-        // invalid condition using named constant
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
             + INVALID_CONDITION_DESC, Condition.MESSAGE_CONSTRAINTS);
 
