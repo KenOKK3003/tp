@@ -18,7 +18,9 @@ Class Address
 Class Email
 Class Name
 Class Phone
-Class Tag
+Class "{abstract}\nTag" as Tag
+Class Allergy
+Class Condition
 
 Class I #FFFFFF
 }
@@ -42,6 +44,9 @@ Patient *--> Phone
 Patient *--> Email
 Patient *--> Address
 Patient *--> "*" Tag
+
+Allergy -up-|> Tag
+Condition -up-|> Tag
 
 Patient -[hidden]up--> I
 UniquePatientList -[hidden]right-> I
