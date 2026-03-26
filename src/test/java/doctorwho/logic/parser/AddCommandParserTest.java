@@ -12,6 +12,7 @@ import static doctorwho.logic.commands.CommandTestUtil.EMAIL_DESC_AMY;
 import static doctorwho.logic.commands.CommandTestUtil.EMAIL_DESC_BOB;
 import static doctorwho.logic.commands.CommandTestUtil.INVALID_ADDRESS_DESC;
 import static doctorwho.logic.commands.CommandTestUtil.INVALID_ALLERGY_DESC;
+import static doctorwho.logic.commands.CommandTestUtil.INVALID_CONDITION_DESC;
 import static doctorwho.logic.commands.CommandTestUtil.INVALID_EMAIL_DESC;
 import static doctorwho.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static doctorwho.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
@@ -238,10 +239,10 @@ public class AddCommandParserTest {
 
         // invalid allergy
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " al/!!!", Tag.MESSAGE_CONSTRAINTS);
+                + INVALID_ALLERGY_DESC, Tag.MESSAGE_CONSTRAINTS);
 
         // invalid condition
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + " mc/!!!", Tag.MESSAGE_CONSTRAINTS);
+                + INVALID_CONDITION_DESC, Tag.MESSAGE_CONSTRAINTS);
     }
 }
